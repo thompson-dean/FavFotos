@@ -8,45 +8,78 @@
 import Foundation
 import Combine
 
-class NetworkingManager {
-    enum NetworkingError: LocalizedError {
-        case badURLResponse(url: URL)
-        case unknown
-        
-        var errorDescription: String? {
-            switch self {
-            case .badURLResponse(url: let url): return "[🔥] Bad response from URL: \(url)"
-            case .unknown: return "[⚠️] Unknown error occured"
-            }
-        }
+protocol NetworkingProtocol {
+    func download(url: URL) -> AnyPublisher<Data, Error>
+}
+
+class NetworkingManager: NetworkingProtocol {
+    
+    private var headers: [String: String]
+    
+    init(headers: [String: String] = ["Authorization": Constants.apiKey]) {
+        self.headers = headers
     }
     
-    static func download(url: URL) -> AnyPublisher<Data, Error> {
+    func download(url: URL) -> AnyPublisher<Data, Error> {
         var request = URLRequest(url: url)
-        request.addValue("\(Constants.apiKey)", forHTTPHeaderField: "Authorization")
+        
+        headers.forEach { key, value in
+            request.addValue(value, forHTTPHeaderField: key)
+        }
         
         return URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap({ try handleURLResponse(output: $0, url: url) })
+            .mapError { NetworkingError.urlError($0) }
+            .tryMap { try self.handleResponse($0, url: url) }
             .retry(3)
             .eraseToAnyPublisher()
     }
     
-    static func handleURLResponse(output: URLSession.DataTaskPublisher.Output, url: URL) throws -> Data {
-        guard let response = output.response as? HTTPURLResponse,
-              response.statusCode >= 200 && response.statusCode < 300 else {
-            throw NetworkingError.badURLResponse(url: url)
-        }
-        
-        return output.data
-    }
-    
-    static func handleCompletion(completion: Subscribers.Completion<Error>) {
+    func handleCompletion(completion: Subscribers.Completion<Error>) {
         switch completion {
         case .finished:
             break
         case .failure(let error):
-            print(error.localizedDescription)
+            notifyError(error)
         }
     }
-}
+    
+    private func handleResponse(_ output: URLSession.DataTaskPublisher.Output, url: URL) throws -> Data {
+        guard let response = output.response as? HTTPURLResponse else {
+            throw NetworkingError.badURLResponse(url: url)
+        }
+        
+        switch response.statusCode {
+        case 200..<300:
+            return output.data
+        case 400:
+            throw NetworkingError.badRequest
+        case 401:
+            throw NetworkingError.unauthorized
+        case 403:
+            throw NetworkingError.forbidden
+        case 404:
+            throw NetworkingError.notFound
+        case 500:
+            throw NetworkingError.serverError
+        default:
+            throw NetworkingError.unknown
+        }
+    }
+    
+    private func notifyError(_ error: Error) {
+        var message: String = "An unexpected error occurred. Please try again."
+        
+        if let networkingError = error as? NetworkingError {
+            switch networkingError {
+            case .badRequest, .unauthorized, .forbidden, .notFound:
+                message = "There was a problem processing your request. Please check and try again."
+            case .serverError:
+                message = "Our servers are currently facing an issue. Please try again later."
+            case .badURLResponse, .unknown, .urlError:
+                break
+            }
+        }
 
+        print("User Alert: \(message)")
+    }
+}

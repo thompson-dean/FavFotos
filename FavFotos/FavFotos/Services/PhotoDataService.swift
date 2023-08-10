@@ -8,29 +8,58 @@
 import Foundation
 import Combine
 
-class PhotoDataService {
+enum URLConstructionError: Error {
+    case invalidEndpoint
+    case invalidParameters
+}
+
+protocol PhotoDataServiceProtocol {
+    func getPhotos(page: Int) -> AnyPublisher<[Photo], Error>
+    func searchPhotos(searchTerm: String, page: Int) -> AnyPublisher<[Photo], Error>
+    func fetchImage(_ urlString: String) -> AnyPublisher<Data, Error>
+}
+
+class PhotoDataService: PhotoDataServiceProtocol {
     
-    func getPhotos(page: Int = 1) -> AnyPublisher<[Photo], Error> {
-        let urlStr = "\(Constants.api)?page=\(page)&per_page=\(Constants.perPage)"
-        
-        guard let url = URL(string: urlStr) else {
-            return Fail(error: NetworkingManager.NetworkingError.unknown)
-                   .eraseToAnyPublisher()
-        }
-        return NetworkingManager.download(url: url)
-            .decode(type: PexelsResponse.self, decoder: JSONDecoder())
-            .map(\.photos)
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
+    private let networkingManager: NetworkingProtocol
+    
+    init(networkingManager: NetworkingProtocol = NetworkingManager()) {
+        self.networkingManager = networkingManager
     }
     
-    func searchPhotos(searchTerm: String) -> AnyPublisher<[Photo], Error> {
-        guard let url = URL(string: "https://api.pexels.com/v1/search?query=\(searchTerm)&per_page=15") else {
-            return Fail(error: NetworkingManager.NetworkingError.unknown)
-                   .eraseToAnyPublisher()
+    func getPhotos(page: Int = 1) -> AnyPublisher<[Photo], Error> {
+        let parameters: [String: String] = [
+            "page": "\(page)",
+            "per_page": "\(Constants.perPage)"
+        ]
+        
+        switch buildURL(for: Constants.curatedAPI, with: parameters) {
+        case .success(let url):
+            return fetchPhotos(from: url)
+        case .failure(let error):
+            return Fail(error: error)
+                .eraseToAnyPublisher()
         }
-
-        return NetworkingManager.download(url: url)
+    }
+    
+    func searchPhotos(searchTerm: String, page: Int = 1) -> AnyPublisher<[Photo], Error> {
+        let parameters: [String: String] = [
+            "query": searchTerm,
+            "page": "\(page)",
+            "per_page": "\(Constants.perPage)"
+        ]
+        
+        switch buildURL(for: Constants.searchAPI, with: parameters) {
+        case .success(let url):
+            return fetchPhotos(from: url)
+        case .failure(let error):
+            return Fail(error: error)
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    private func fetchPhotos(from url: URL) -> AnyPublisher<[Photo], Error> {
+        return networkingManager.download(url: url)
             .decode(type: PexelsResponse.self, decoder: JSONDecoder())
             .map(\.photos)
             .receive(on: DispatchQueue.main)
@@ -39,11 +68,27 @@ class PhotoDataService {
     
     func fetchImage(_ urlString: String) -> AnyPublisher<Data, Error> {
         guard let url = URL(string: urlString) else {
-            return Fail(error: NetworkingManager.NetworkingError.unknown)
-                   .eraseToAnyPublisher()
+            return Fail(error: NetworkingError.unknown)
+                .eraseToAnyPublisher()
         }
-        return NetworkingManager.download(url: url)
+        return networkingManager.download(url: url)
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+    }
+    
+    private func buildURL(for endpoint: String, with parameters: [String: String]) -> Result<URL, Error> {
+        var components = URLComponents(string: endpoint)
+        
+        if components == nil {
+            return .failure(URLConstructionError.invalidEndpoint)
+        }
+        
+        components?.queryItems = parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
+        
+        if let url = components?.url {
+            return .success(url)
+        } else {
+            return .failure(URLConstructionError.invalidParameters)
+        }
     }
 }

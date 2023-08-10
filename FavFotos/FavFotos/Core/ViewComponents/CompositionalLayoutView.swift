@@ -42,8 +42,10 @@ struct CompositionalLayoutView<Content, Item, ID>: View where Content: View, ID:
             } else if types.last == .type2 {
                 types.append(.type3)
             } else if types.last == .type3 {
+                types.append(.type4)
+            } else if types.last == .type4 {
                 types.append(.type1)
-            } else { }
+            }
         }
         
         return types[index]
@@ -88,6 +90,16 @@ struct CompositionalLayoutView<Content, Item, ID>: View where Content: View, ID:
                     .frame(width: columnWidth)
                     SafeView(row: row, index: 2)
                 }
+                if type == .type4 {
+                        HStack(spacing: spacing) {
+                            SafeView(row: row, index: 2)
+                                .frame(width: columnWidth)
+                            SafeView(row: row, index: 1)
+                                .frame(width: columnWidth)
+                            SafeView(row: row, index: 0)
+                                .frame(width: columnWidth)
+                        }
+                    }
             }
         }
         .frame(height: layoutType(row: row) == .type1 || layoutType(row: row) == .type3 ? 250 : 120)
@@ -127,5 +139,5 @@ struct CompositionalLayoutView_Previews: PreviewProvider {
 }
 
 enum LayoutType {
-    case type1, type2, type3
+    case type1, type2, type3, type4
 }
