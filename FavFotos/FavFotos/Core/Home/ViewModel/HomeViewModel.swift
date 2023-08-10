@@ -11,6 +11,7 @@ import Combine
 class HomeViewModel: ObservableObject {
     @Published private (set) var searchedPhotos: [Photo] = []
     @Published private (set) var curatedPhotos: [Photo] = []
+    @Published private (set) var currentPage: Int = 0
     @Published var searchTerm: String = ""
     
     private let photoDataService = PhotoDataService()
@@ -25,7 +26,7 @@ class HomeViewModel: ObservableObject {
     }
     
     init() {
-        fetchCureatedPhotos()
+        fetchCuratedPhotos()
         listenToSearch()
     }
     
@@ -41,13 +42,24 @@ class HomeViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func fetchCureatedPhotos() {
-        photoDataService.getPhotos()
+    func fetchCuratedPhotos() {
+        currentPage += 1
+        print("DEBUG: \(currentPage)")
+        photoDataService.getPhotos(page: currentPage)
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] fetchedPhotos in
-                self?.curatedPhotos = fetchedPhotos
+                self?.curatedPhotos += fetchedPhotos
             })
             .store(in: &cancellables)
-        
+    }
+    
+    func fetchNextCuratedPhotos() {
+        currentPage += 1
+        print("DEBUG: \(currentPage)")
+        photoDataService.getPhotos(page: currentPage)
+            .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] fetchedPhotos in
+                self?.curatedPhotos += fetchedPhotos
+            })
+            .store(in: &cancellables)
     }
     
     func searchPhotos(searchString: String) {
@@ -56,5 +68,9 @@ class HomeViewModel: ObservableObject {
                 self?.searchedPhotos = fetchedPhotos
             })
             .store(in: &cancellables)
+    }
+    
+    func hasReachedEnd(of photo: Photo) -> Bool {
+        curatedPhotos.last?.id == photo.id
     }
 }

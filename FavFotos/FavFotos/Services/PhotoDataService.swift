@@ -10,8 +10,22 @@ import Combine
 
 class PhotoDataService {
     
-    func getPhotos() -> AnyPublisher<[Photo], Error> {
-        guard let url = URL(string: Constants.api) else {
+    func getPhotos(page: Int = 1) -> AnyPublisher<[Photo], Error> {
+        let urlStr = "\(Constants.api)?page=\(page)&per_page=\(Constants.perPage)"
+        
+        guard let url = URL(string: urlStr) else {
+            return Fail(error: NetworkingManager.NetworkingError.unknown)
+                   .eraseToAnyPublisher()
+        }
+        return NetworkingManager.download(url: url)
+            .decode(type: PexelsResponse.self, decoder: JSONDecoder())
+            .map(\.photos)
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    func searchPhotos(searchTerm: String) -> AnyPublisher<[Photo], Error> {
+        guard let url = URL(string: "https://api.pexels.com/v1/search?query=\(searchTerm)&per_page=15") else {
             return Fail(error: NetworkingManager.NetworkingError.unknown)
                    .eraseToAnyPublisher()
         }
@@ -23,15 +37,12 @@ class PhotoDataService {
             .eraseToAnyPublisher()
     }
     
-    func searchPhotos(searchTerm: String) -> AnyPublisher<[Photo], Error> {
-        guard let url = URL(string: "https://api.pexels.com/v1/search?query=\(searchTerm)&per_page=1") else {
+    func fetchImage(_ urlString: String) -> AnyPublisher<Data, Error> {
+        guard let url = URL(string: urlString) else {
             return Fail(error: NetworkingManager.NetworkingError.unknown)
                    .eraseToAnyPublisher()
         }
-
         return NetworkingManager.download(url: url)
-            .decode(type: PexelsResponse.self, decoder: JSONDecoder())
-            .map(\.photos)
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
