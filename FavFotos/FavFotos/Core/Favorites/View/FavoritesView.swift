@@ -52,7 +52,6 @@ struct FavoritesView: View {
                 }
             }
             .onAppear {
-                print("DEBUG ON APPEAR CALLED BRUZ")
                 vm.fetchFavorites()
             }
             .navigationBarTitle("Favorites", displayMode: .large)

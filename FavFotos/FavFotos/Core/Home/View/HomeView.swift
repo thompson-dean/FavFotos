@@ -27,15 +27,27 @@ struct HomeView: View {
                             if vm.state == .loading {
                                 ProgressView()
                                     .padding()
-                                    .background(Color.black.opacity(0.4).cornerRadius(8)) 
+                                    .background(Color.black.opacity(0.4).cornerRadius(8))
                             }
                         }
+                    case .noResults:
+                        VStack(alignment: .center, spacing: 16) {
+                            Image(systemName: "magnifyingglass")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 48, height: 48)
+                            Text("No search results, try again.")
+                        }
+                        .padding(16)
+                        .frame(maxWidth: .infinity)
+                        .background(colorScheme == .light ? .black.opacity(0.1) : .white.opacity(0.1))
+                        .cornerRadius(8)
                     case .error(let errorMessage):
                         VStack(alignment: .center, spacing: 16) {
                             Image(systemName: "wifi.exclamationmark")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 64, height: 64)
+                                .frame(width: 48, height: 48)
                             Text(errorMessage)
                             Button {
                                 vm.reset()
@@ -46,6 +58,7 @@ struct HomeView: View {
                             }
                         }
                         .padding(16)
+                        .frame(maxWidth: .infinity)
                         .background(colorScheme == .light ? .black.opacity(0.1) : .white.opacity(0.1))
                         .cornerRadius(8)
                     }

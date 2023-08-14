@@ -14,6 +14,7 @@ class HomeViewModel: ObservableObject {
         case idle
         case loading
         case loaded
+        case noResults
         case error(String)
     }
     
@@ -55,7 +56,10 @@ class HomeViewModel: ObservableObject {
             .sink { [weak self] delayQuery in
                 self?.searchedPhotos = []
                 self?.currentSearchPage = 0
-                if !delayQuery.isEmpty {
+                
+                if delayQuery.isEmpty {
+                    self?.state = .loaded
+                } else {
                     self?.searchPhotos(searchString: delayQuery)
                 }
             }
@@ -87,6 +91,10 @@ class HomeViewModel: ObservableObject {
             }, receiveValue: { [weak self] pexelsResponse in
                 self?.nextSearchPageURL = pexelsResponse.nextPage
                 self?.searchedPhotos += pexelsResponse.photos
+                
+                if self?.searchedPhotos.isEmpty == true {
+                    self?.state = .noResults
+                }
             })
             .store(in: &cancellables)
     }
@@ -133,7 +141,9 @@ class HomeViewModel: ObservableObject {
     func handleCompletion(_ completion: Subscribers.Completion<Error>) {
         switch completion {
         case .finished:
-            state = .loaded
+            if state != .noResults {
+                state = .loaded
+            }
         case .failure(let error):
             let errorMessage = ErrorHandler.userFriendlyMessage(from: error)
             state = .error(errorMessage)
