@@ -1,7 +1,7 @@
 # FavFotos 🚀
 FavFotos is an iOS application that allows users to search and view photos from the Pexels API. The app supports features like viewing photo details, changing photo quality, and saving photos to favorites.
 
-![Screenshot of App Main Screen](FavFotos/screenshot1.mp4)
+![Screenshot of App Main Screen](FavFotos/screenshots/screenshot01.mp4)
 
 ## Features 🌟
 - **Curated Photos**: Scroll through Pexel's curated list of photos.
