@@ -55,6 +55,7 @@ While the current implementation serves its core purpose, here are some potentia
 - Adding an Information button to the photos to get more details about them.
 - I would have also liked to add deeper error handling for the CoreData part of my project.
 - If I had more time to complete the project I would have been more considerate with git and would have used a variation of git-flow.
+- I would like to add more test coverage in future.
 
 ## License 📄
 
