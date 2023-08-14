@@ -1,7 +1,7 @@
 # FavFotos 🚀
 FavFotos is an iOS application that allows users to search and view photos from the Pexels API. The app supports features like viewing photo details, changing photo quality, and saving photos to favorites.
 
-![Screenshot of App Main Screen](./screenshot1.png) ![Screenshot of App Detail Screen](./screenshot2.png)
+![Screenshot of App Main Screen](FavFotos/screenshot1.mp4)
 
 ## Features 🌟
 - **Curated Photos**: Scroll through Pexel's curated list of photos.
@@ -53,8 +53,9 @@ While the current implementation serves its core purpose, here are some potentia
 
 - Introducing a dark mode toggle for better user experience in different lighting conditions.
 - Adding an Information button to the photos to get more details about them.
-- In future, I would have also liked to add deeper error handling for the CoreData part of my project.
+- I would have also liked to add deeper error handling for the CoreData part of my project.
+- If I had more time to complete the project I would have been more considerate with git and would have used a variation of git-flow.
 
 ## License 📄
 
-This project is distributed under the MIT License. You can see the detailed license in the [LICENSE](./LICENSE) file for more specifics.
+This project is distributed under the MIT License.  
