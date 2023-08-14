@@ -10,18 +10,23 @@ import Combine
 
 class HomeViewModel: ObservableObject {
     
-    enum ViewState {
-        case idle, loading, loaded, failed
+    enum ViewModelState: Equatable {
+        case idle
+        case loading
+        case loaded
+        case error(String)
     }
     
     @Published private (set) var searchedPhotos: [Photo] = []
     @Published private (set) var curatedPhotos: [Photo] = []
     @Published private (set) var currentPage: Int = 0
-    @Published private (set) var currentSearchPage: Int = 0    
+    @Published private (set) var currentSearchPage: Int = 0
     @Published var searchTerm: String = ""
-    @Published private var isLoading: Bool = false
-    @Published var viewState: ViewState = .idle
+    @Published var isLoading: Bool = false
+    @Published var state: ViewModelState = .idle
+    @Published var selectedImageQuality: ImageQuality = .medium
     
+    private var nextSearchPageURL: String? = nil
     private let photoDataService: PhotoDataServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     
@@ -58,50 +63,59 @@ class HomeViewModel: ObservableObject {
     }
     
     func fetchCuratedPhotos() {
-        guard !isLoading else { return }
+        guard state != .loading else { return }
         
-        isLoading = true
-        viewState = .loading
+        state = .loading
         currentPage += 1
         photoDataService.getPhotos(page: currentPage)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.handleCompletion(completion)
-            }, receiveValue: { [weak self] fetchedPhotos in
-                self?.curatedPhotos += fetchedPhotos
-                self?.viewState = .loaded
+            }, receiveValue: { [weak self] pexelsResponse in
+                self?.curatedPhotos += pexelsResponse.photos
             })
             .store(in: &cancellables)
     }
     
     func searchPhotos(searchString: String) {
-        guard !isLoading else { return }
+        guard state != .loading else { return }
         
-        isLoading = true
-        viewState = .loading
+        state = .loading
         currentSearchPage += 1
         photoDataService.searchPhotos(searchTerm: searchString, page: currentSearchPage)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.handleCompletion(completion)
-            }, receiveValue: { [weak self] fetchedPhotos in
-                self?.searchedPhotos += fetchedPhotos
-                self?.viewState = .loaded
+            }, receiveValue: { [weak self] pexelsResponse in
+                self?.nextSearchPageURL = pexelsResponse.nextPage
+                self?.searchedPhotos += pexelsResponse.photos
             })
             .store(in: &cancellables)
     }
     
     func fetchNextSearchPhotos() {
-        guard !isLoading else { return }
+        guard state != .loading, let _ = nextSearchPageURL else { return }
         
-        isLoading = true
+        state = .loading
         currentSearchPage += 1
         photoDataService.searchPhotos(searchTerm: self.searchTerm, page: currentSearchPage)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.handleCompletion(completion)
-            }, receiveValue: { [weak self] fetchedPhotos in
-                self?.searchedPhotos += fetchedPhotos
-                self?.viewState = .loaded
+            }, receiveValue: { [weak self] pexelsResponse in
+                self?.nextSearchPageURL = pexelsResponse.nextPage
+                self?.searchedPhotos += pexelsResponse.photos
             })
             .store(in: &cancellables)
+    }
+    
+    func reset() {
+        if isSearching {
+            searchedPhotos = []
+            currentSearchPage = 0
+            fetchNextSearchPhotos()
+        } else {
+            curatedPhotos = []
+            currentPage = 0
+            fetchCuratedPhotos()
+        }
     }
     
     func hasReachedEnd(of photo: Photo) -> Bool {
@@ -117,38 +131,19 @@ class HomeViewModel: ObservableObject {
     }
     
     func handleCompletion(_ completion: Subscribers.Completion<Error>) {
-        isLoading = false
         switch completion {
         case .finished:
-            break
+            state = .loaded
         case .failure(let error):
-            viewState = .failed
-            printError(error)
+            let errorMessage = ErrorHandler.userFriendlyMessage(from: error)
+            state = .error(errorMessage)
+            print(errorMessage)
         }
+        isLoading = false
     }
     
-    func printError(_ error: Error) {
-        switch error {
-        case NetworkingError.badRequest:
-            print("Bad request error")
-        case NetworkingError.unauthorized:
-            print("Unauthorized request")
-        case NetworkingError.forbidden:
-            print("Forbidden")
-        case NetworkingError.notFound:
-            print("Resource not found")
-        case NetworkingError.serverError:
-            print("Internal server error")
-        case NetworkingError.unknown:
-            print("Unknown error occurred")
-        case NetworkingError.urlError(let error):
-            print(error.localizedDescription)
-        case URLConstructionError.invalidEndpoint:
-            print("Invalid endpoint")
-        case URLConstructionError.invalidParameters:
-            print("Invalid parameters")
-        default:
-            print(error.localizedDescription)
-        }
+    func updateImageQuality(to quality: ImageQuality) {
+        self.selectedImageQuality = quality
+        self.reset()
     }
 }

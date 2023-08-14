@@ -14,8 +14,8 @@ enum URLConstructionError: Error {
 }
 
 protocol PhotoDataServiceProtocol {
-    func getPhotos(page: Int) -> AnyPublisher<[Photo], Error>
-    func searchPhotos(searchTerm: String, page: Int) -> AnyPublisher<[Photo], Error>
+    func getPhotos(page: Int) -> AnyPublisher<PexelsResponse, Error>
+    func searchPhotos(searchTerm: String, page: Int) -> AnyPublisher<PexelsResponse, Error>
     func fetchImage(_ urlString: String) -> AnyPublisher<Data, Error>
 }
 
@@ -27,22 +27,22 @@ class PhotoDataService: PhotoDataServiceProtocol {
         self.networkingManager = networkingManager
     }
     
-    func getPhotos(page: Int = 1) -> AnyPublisher<[Photo], Error> {
+    func getPhotos(page: Int = 1) -> AnyPublisher<PexelsResponse, Error> {
         let parameters: [String: String] = [
             "page": "\(page)",
             "per_page": "\(Constants.perPage)"
         ]
         
         switch buildURL(for: Constants.curatedAPI, with: parameters) {
-        case .success(let url):
-            return fetchPhotos(from: url)
-        case .failure(let error):
-            return Fail(error: error)
-                .eraseToAnyPublisher()
-        }
+            case .success(let url):
+                return fetchPexelsResponse(from: url)
+            case .failure(let error):
+                return Fail(error: error)
+                    .eraseToAnyPublisher()
+            }
     }
     
-    func searchPhotos(searchTerm: String, page: Int = 1) -> AnyPublisher<[Photo], Error> {
+    func searchPhotos(searchTerm: String, page: Int = 1) -> AnyPublisher<PexelsResponse, Error> {
         let parameters: [String: String] = [
             "query": searchTerm,
             "page": "\(page)",
@@ -50,18 +50,17 @@ class PhotoDataService: PhotoDataServiceProtocol {
         ]
         
         switch buildURL(for: Constants.searchAPI, with: parameters) {
-        case .success(let url):
-            return fetchPhotos(from: url)
-        case .failure(let error):
-            return Fail(error: error)
-                .eraseToAnyPublisher()
-        }
+            case .success(let url):
+                return fetchPexelsResponse(from: url)
+            case .failure(let error):
+                return Fail(error: error)
+                    .eraseToAnyPublisher()
+            }
     }
     
-    private func fetchPhotos(from url: URL) -> AnyPublisher<[Photo], Error> {
+    private func fetchPexelsResponse(from url: URL) -> AnyPublisher<PexelsResponse, Error> {
         return networkingManager.download(url: url)
             .decode(type: PexelsResponse.self, decoder: JSONDecoder())
-            .map(\.photos)
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }

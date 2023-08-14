@@ -10,78 +10,45 @@ import SwiftUI
 struct HomeView: View {
     @StateObject var vm = HomeViewModel()
     @FocusState private var isInputActive: Bool
+    @State private var isHighQuality: Bool = false
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                switch vm.viewState {
-                case .idle:
-                    CompositionalLayoutView(items: 0..<12, id: \.self, spacing: 8) { index in
-                        GeometryReader { geo in
-                            Image(systemName: "photo")
-                                .defaultImageModifier()
-                                .frame(width: geo.size.width, height: geo.size.height)
-                                .cornerRadius(4)
-                                .redacted(reason: .placeholder)
+            ZStack {
+                Group {
+                    switch vm.state {
+                    case .loaded, .idle, .loading:
+                        ScrollView {
+                            self.photosView()
+                                .padding(.bottom, 24)
                         }
-                    }
-                case .loading:
-                    CompositionalLayoutView(items: 0..<12, id: \.self, spacing: 8) { index in
-                        GeometryReader { geo in
-                            Image(systemName: "photo")
-                                .defaultImageModifier()
-                                .frame(width: geo.size.width, height: geo.size.height)
-                                .cornerRadius(4)
-                                .redacted(reason: .placeholder)
+                        .overlay(alignment: .bottom) {
+                            if vm.state == .loading {
+                                ProgressView()
+                                    .padding()
+                                    .background(Color.black.opacity(0.4).cornerRadius(8)) 
+                            }
                         }
-                    }
-                case .loaded:
-                    CompositionalLayoutView(items: vm.photos, id: \.self, spacing: 8) { photo in
-                        NavigationLink {
-                            DetailView(photo: photo)
-                        } label: {
-                            GeometryReader { geo in
-                                CachedImage(urlString: photo.src.large) { phase in
-                                    switch phase {
-                                    case .empty:
-                                        Image(systemName: "photo")
-                                            .defaultImageModifier()
-                                            .frame(width: geo.size.width, height: geo.size.height)
-                                            .cornerRadius(4)
-                                            .redacted(reason: .placeholder)
-                                    case.failure(let error):
-                                        Image(systemName: "exclamationmark.triangle")
-                                            .defaultImageModifier()
-                                            .frame(width: geo.size.width, height: geo.size.height)
-                                            .cornerRadius(4)
-                                    case .success(let image):
-                                        image
-                                            .defaultImageModifier()
-                                            .frame(width: geo.size.width, height: geo.size.height)
-                                            .cornerRadius(4)
-                                    default:
-                                        EmptyView()
-                                    }
-                                }
-                                .onAppear {
-                                    if vm.hasReachedEnd(of: photo) {
-                                        vm.fetchMorePhotos()
-                                    }
-                                }
+                    case .error(let errorMessage):
+                        VStack {
+                            Text(errorMessage)
+                                .font(.title)
+                            Button("Retry") {
+                                vm.reset()
                             }
                         }
                     }
-                case .failed:
-                    VStack {
-                        Text("Failed")
-                    }
                 }
-                
             }
             .padding(8)
             .navigationTitle("FavFotos")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    self.toolbarMenu()
+                }
+            }
+            .searchable(text: $vm.searchTerm)
         }
-        .searchable(text: $vm.searchTerm)
     }
 }
 
@@ -91,4 +58,60 @@ struct HomeView_Previews: PreviewProvider {
     }
 }
 
+extension HomeView {
+    func photosView() -> some View {
+        CompositionalLayoutView(items: vm.photos, id: \.self, spacing: 8) { photo in
+            NavigationLink {
+                DetailView(photo: photo)
+            } label: {
+                GeometryReader { geo in
+                    CachedImage(urlString: photo.url(for: vm.selectedImageQuality)) { phase in
+                        switch phase {
+                        case .empty, .failure(_):
+                            Image(systemName: "photo")
+                                .defaultImageModifier()
+                                .frame(width: geo.size.width, height: geo.size.height)
+                                .cornerRadius(4)
+                                .redacted(reason: .placeholder)
+                        case .success(let image):
+                            let returnedImage = Image(uiImage: image)
+                            returnedImage
+                                .defaultImageModifier()
+                                .frame(width: geo.size.width, height: geo.size.height)
+                                .cornerRadius(4)
+                        default:
+                            EmptyView()
+                        }
+                    }
+                    .onAppear {
+                        if vm.hasReachedEnd(of: photo) {
+                            vm.fetchMorePhotos()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func toolbarMenu() -> some View {
+        Menu(content: {
+            ForEach(ImageQuality.allCases, id: \.self) { quality in
+                Button {
+                    vm.updateImageQuality(to: quality)
+                } label: {
+                    HStack {
+                        Text(quality.rawValue)
+                        if vm.selectedImageQuality == quality {
+                            Spacer()
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+            }
+        }, label: {
+            Image(systemName: "gear")
+                .tint(.primary)
+        })
+    }
+}
 

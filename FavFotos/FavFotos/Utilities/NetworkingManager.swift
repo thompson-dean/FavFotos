@@ -34,52 +34,20 @@ class NetworkingManager: NetworkingProtocol {
             .eraseToAnyPublisher()
     }
     
-    func handleCompletion(completion: Subscribers.Completion<Error>) {
-        switch completion {
-        case .finished:
-            break
-        case .failure(let error):
-            notifyError(error)
-        }
-    }
-    
     private func handleResponse(_ output: URLSession.DataTaskPublisher.Output, url: URL) throws -> Data {
         guard let response = output.response as? HTTPURLResponse else {
-            throw NetworkingError.badURLResponse(url: url)
+            throw NetworkingError.clientError(message: "Bad URL response.")
         }
         
         switch response.statusCode {
         case 200..<300:
             return output.data
-        case 400:
-            throw NetworkingError.badRequest
-        case 401:
-            throw NetworkingError.unauthorized
-        case 403:
-            throw NetworkingError.forbidden
-        case 404:
-            throw NetworkingError.notFound
-        case 500:
-            throw NetworkingError.serverError
+        case 400..<500:
+            throw NetworkingError.clientError(message: "Client error with code: \(response.statusCode).")
+        case 500..<600:
+            throw NetworkingError.serverError(message: "Server error with code: \(response.statusCode).")
         default:
             throw NetworkingError.unknown
         }
-    }
-    
-    private func notifyError(_ error: Error) {
-        var message: String = "An unexpected error occurred. Please try again."
-        
-        if let networkingError = error as? NetworkingError {
-            switch networkingError {
-            case .badRequest, .unauthorized, .forbidden, .notFound:
-                message = "There was a problem processing your request. Please check and try again."
-            case .serverError:
-                message = "Our servers are currently facing an issue. Please try again later."
-            case .badURLResponse, .unknown, .urlError:
-                break
-            }
-        }
-
-        print("User Alert: \(message)")
     }
 }

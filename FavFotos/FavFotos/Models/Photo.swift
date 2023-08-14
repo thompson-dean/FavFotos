@@ -7,25 +7,11 @@
 
 import Foundation
 
-struct Photo: Codable, Identifiable, Hashable {
-    static func == (lhs: Photo, rhs: Photo) -> Bool {
-        return lhs.id == rhs.id &&
-               lhs.width == rhs.width &&
-               lhs.height == rhs.height &&
-               lhs.url == rhs.url &&
-               lhs.photographer == rhs.photographer &&
-               lhs.photographerURL == rhs.photographerURL &&
-               lhs.photographerID == rhs.photographerID &&
-               lhs.avgColor == rhs.avgColor &&
-               lhs.src == rhs.src &&
-               lhs.liked == rhs.liked &&
-               lhs.alt == rhs.alt
-    }
-    
+struct Photo: Codable, Identifiable {
     let id: Int
     let width: Int
     let height: Int
-    let url: URL
+    let url: String
     let photographer: String
     let photographerURL: String
     let photographerID: Int
@@ -61,14 +47,28 @@ struct PexelsResponse: Codable {
     let page: Int
     let perPage: Int
     let photos: [Photo]
-    let nextPage: URL
+    let nextPage: String?
 
     enum CodingKeys: String, CodingKey {
         case page, perPage = "per_page", photos, nextPage = "next_page"
     }
 }
 
-extension Photo {
+extension Photo: Hashable {
+    static func == (lhs: Photo, rhs: Photo) -> Bool {
+        return lhs.id == rhs.id &&
+               lhs.width == rhs.width &&
+               lhs.height == rhs.height &&
+               lhs.url == rhs.url &&
+               lhs.photographer == rhs.photographer &&
+               lhs.photographerURL == rhs.photographerURL &&
+               lhs.photographerID == rhs.photographerID &&
+               lhs.avgColor == rhs.avgColor &&
+               lhs.src == rhs.src &&
+               lhs.liked == rhs.liked &&
+               lhs.alt == rhs.alt
+    }
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(width)

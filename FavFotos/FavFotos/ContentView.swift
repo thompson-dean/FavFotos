@@ -12,7 +12,7 @@ struct MainTabView: View {
         TabView {
             HomeView()
                 .tabItem {
-                    Label("Menu", systemImage: "magnifyingglass")
+                    Label("Discover", systemImage: "magnifyingglass")
                 }
             
             FakeView()

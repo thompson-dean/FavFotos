@@ -7,11 +7,17 @@
 
 import SwiftUI
 
+enum ImagePhase {
+    case empty
+    case failure(Error)
+    case success(UIImage)
+}
+
 struct CachedImage<Content: View>: View {
     
     @StateObject private var manager = CachedImageManager()
     let urlString: String
-    @ViewBuilder let content: (AsyncImagePhase) -> Content
+    @ViewBuilder let content: (ImagePhase) -> Content
     
     var body: some View {
         ZStack {
@@ -22,7 +28,7 @@ struct CachedImage<Content: View>: View {
                 content(.failure(error))
             case .success(let data):
                 if let image = UIImage(data: data) {
-                    content(.success(Image(uiImage: image)))
+                    content(.success(image))
                 } else {
                     content(.failure(CachedImageError.invalidData))
                 }
