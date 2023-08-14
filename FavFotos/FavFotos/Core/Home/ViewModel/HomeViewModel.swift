@@ -31,9 +31,12 @@ class HomeViewModel: ObservableObject {
     private let photoDataService: PhotoDataServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     
-    init(photoDataService: PhotoDataServiceProtocol = PhotoDataService()) {
+    init(photoDataService: PhotoDataServiceProtocol = PhotoDataService(), fetchOnInit: Bool = true) {
+        
         self.photoDataService = photoDataService
-        fetchCuratedPhotos()
+        if fetchOnInit {
+            fetchCuratedPhotos()
+        }
         listenToSearch()
     }
     

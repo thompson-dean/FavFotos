@@ -8,10 +8,7 @@
 import SwiftUI
 import UIKit
 
-enum DetailSource {
-    case entity(PhotoEntity)
-    case photo(Photo)
-}
+
 
 struct DetailView: View {
     
