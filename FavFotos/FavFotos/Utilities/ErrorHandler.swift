@@ -8,7 +8,6 @@
 import Foundation
 
 class ErrorHandler {
-    
     static func userFriendlyMessage(from error: Error) -> String {
         switch error {
         case NetworkingError.clientError(let message):

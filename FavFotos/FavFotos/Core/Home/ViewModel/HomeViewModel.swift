@@ -115,6 +115,8 @@ class HomeViewModel: ObservableObject {
     }
     
     func reset() {
+        ImageCache.shared.clear()
+        
         if isSearching {
             searchedPhotos = []
             currentSearchPage = 0

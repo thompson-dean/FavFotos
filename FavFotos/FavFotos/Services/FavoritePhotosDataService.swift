@@ -9,21 +9,30 @@ import Foundation
 import CoreData
 
 protocol FavoritePhotosDataServiceProtocol {
+    /// Retrieve a list of favorite photos.
     func getFavorites() -> [PhotoEntity]
+    
+    /// Retrieve a specific `PhotoEntity` by its identifier.
     func getPhotoEntity(for id: Int) -> PhotoEntity?
+    
+    /// Add a photo to the favorites list.
     func add(photo: Photo)
+    
+    /// Remove a specific photo entity from the favorites list.
     func delete(entity: PhotoEntity)
+    
+    /// Check if a photo, identified by its ID, is marked as favorite.
     func isPhotoLiked(id: Int) -> Bool
 }
 
 class FavoritePhotosDataService: FavoritePhotosDataServiceProtocol {
     
+    /// Core Data container for storing favorite photos.
     private let container: NSPersistentContainer
-    private let containerName: String = "FavoritesContainer"
-    private let entityName: String = "PhotoEntity"
     
+    /// Initializes the `FavoritePhotosDataService`, loading the Core Data store.
     init() {
-        container = NSPersistentContainer(name: containerName)
+        container = NSPersistentContainer(name: Constants.containerName)
         container.loadPersistentStores { (_, error) in
             if let error = error {
                 print("Error loading Core Data! \(error)")
@@ -31,8 +40,9 @@ class FavoritePhotosDataService: FavoritePhotosDataServiceProtocol {
         }
     }
     
+    /// Fetches all favorite photos.
     func getFavorites() -> [PhotoEntity] {
-        let request = NSFetchRequest<PhotoEntity>(entityName: entityName)
+        let request = NSFetchRequest<PhotoEntity>(entityName: Constants.entityName)
         do {
             return try container.viewContext.fetch(request)
         } catch let error {
@@ -41,8 +51,9 @@ class FavoritePhotosDataService: FavoritePhotosDataServiceProtocol {
         }
     }
     
+    /// Fetches a specific `PhotoEntity` based on its identifier.
     func getPhotoEntity(for id: Int) -> PhotoEntity? {
-        let request = NSFetchRequest<PhotoEntity>(entityName: entityName)
+        let request = NSFetchRequest<PhotoEntity>(entityName: Constants.entityName)
         request.predicate = NSPredicate(format: "id == %d", id)
         
         do {
@@ -53,6 +64,7 @@ class FavoritePhotosDataService: FavoritePhotosDataServiceProtocol {
         }
     }
     
+    /// Adds a new photo to the favorites list.
     func add(photo: Photo) {
         let photoEntity = PhotoEntity(context: container.viewContext)
         
@@ -68,12 +80,13 @@ class FavoritePhotosDataService: FavoritePhotosDataServiceProtocol {
         applyChanges()
     }
     
+    /// Deletes a given photo entity from the favorites list.
     func delete(entity: PhotoEntity) {
         container.viewContext.delete(entity)
         applyChanges()
     }
     
-    
+    /// Saves the changes made to the Core Data context.
     private func save() {
         do {
             try container.viewContext.save()
@@ -82,12 +95,14 @@ class FavoritePhotosDataService: FavoritePhotosDataServiceProtocol {
         }
     }
     
+    /// Applies changes (typically an add or delete operation) by saving them.
     private func applyChanges() {
         save()
     }
     
+    /// Checks if a specific photo, identified by its ID, is in the favorites list.
     func isPhotoLiked(id: Int) -> Bool {
-        let request = NSFetchRequest<PhotoEntity>(entityName: entityName)
+        let request = NSFetchRequest<PhotoEntity>(entityName: Constants.entityName)
         request.predicate = NSPredicate(format: "id == %d", id)
         
         do {
@@ -99,5 +114,4 @@ class FavoritePhotosDataService: FavoritePhotosDataServiceProtocol {
         }
     }
 }
-
 
