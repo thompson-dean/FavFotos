@@ -15,18 +15,10 @@ struct MainTabView: View {
                     Label("Discover", systemImage: "magnifyingglass")
                 }
             
-            FakeView()
+            FavoritesView()
                 .tabItem {
                     Label("Favorites", systemImage: "heart")
                 }
-        }
-    }
-}
-
-struct FakeView: View {
-    var body: some View {
-        VStack {
-            Text("FILLER")
         }
     }
 }

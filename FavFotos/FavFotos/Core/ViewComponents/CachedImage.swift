@@ -16,6 +16,7 @@ enum ImagePhase {
 struct CachedImage<Content: View>: View {
     
     @StateObject private var manager = CachedImageManager()
+    let id: Int
     let urlString: String
     @ViewBuilder let content: (ImagePhase) -> Content
     
@@ -37,14 +38,14 @@ struct CachedImage<Content: View>: View {
             }
         }
         .onAppear {
-            manager.load(urlString)
+            manager.load(for: id, urlString: urlString)
         }
     }
 }
 
 struct CachedImage_Previews: PreviewProvider {
     static var previews: some View {
-        CachedImage(urlString: "https://images.pexels.com/photos/3573351/pexels-photo-3573351.png?auto=compress&cs=tinysrgb&h=650&w=940") { _ in
+        CachedImage(id: 1, urlString: "https://images.pexels.com/photos/3573351/pexels-photo-3573351.png?auto=compress&cs=tinysrgb&h=650&w=940") { _ in
             EmptyView()
         }
     }

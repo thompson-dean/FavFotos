@@ -14,10 +14,10 @@ final class CachedImageManager: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private let photoDataService = PhotoDataService()
     
-    func load(_ urlString: String, cache: ImageCache = .shared) {
+    func load(for id: Int, urlString: String, cache: ImageCache = .shared) {
         
         self.state = .loading
-        if let imageData = cache.image(for: urlString) {
+        if let imageData = cache.image(for: id) {
             self.state = .success(imageData)
             return
         }
@@ -32,7 +32,7 @@ final class CachedImageManager: ObservableObject {
                 }
             }, receiveValue: { [weak self] data in
                 self?.state = .success(data)
-                cache.insertImage(data, for: urlString)
+                cache.insertImage(data, for: id)
             })
             .store(in: &cancellables)
     }

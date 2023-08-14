@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Environment(\.colorScheme) var colorScheme
     @StateObject var vm = HomeViewModel()
     @FocusState private var isInputActive: Bool
     @State private var isHighQuality: Bool = false
@@ -30,13 +31,23 @@ struct HomeView: View {
                             }
                         }
                     case .error(let errorMessage):
-                        VStack {
+                        VStack(alignment: .center, spacing: 16) {
+                            Image(systemName: "wifi.exclamationmark")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 64, height: 64)
                             Text(errorMessage)
-                                .font(.title)
-                            Button("Retry") {
+                            Button {
                                 vm.reset()
+                            } label: {
+                                Text("Retry")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
                             }
                         }
+                        .padding(16)
+                        .background(colorScheme == .light ? .black.opacity(0.1) : .white.opacity(0.1))
+                        .cornerRadius(8)
                     }
                 }
             }
@@ -65,7 +76,7 @@ extension HomeView {
                 DetailView(photo: photo)
             } label: {
                 GeometryReader { geo in
-                    CachedImage(urlString: photo.url(for: vm.selectedImageQuality)) { phase in
+                    CachedImage(id: photo.id, urlString: photo.url(for: vm.selectedImageQuality)) { phase in
                         switch phase {
                         case .empty, .failure(_):
                             Image(systemName: "photo")

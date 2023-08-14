@@ -16,17 +16,17 @@ class ImageCache {
     private init() { }
     
     private lazy var cache: CacheType = {
-       let cache = CacheType()
+        let cache = CacheType()
         cache.countLimit = 120
         cache.totalCostLimit = 100 * 1024 * 1024
         return cache
     }()
     
-    func image(for key: String) -> Data? {
-        return cache.object(forKey: key as NSString) as Data?
+    func image(for id: Int) -> Data? {
+        return cache.object(forKey: "\(id)" as NSString) as Data?
     }
     
-    func insertImage(_ data: Data, for key: String) {
-        return cache.setObject(data as NSData, forKey: key as NSString)
+    func insertImage(_ data: Data, for id: Int) {
+        return cache.setObject(data as NSData, forKey: "\(id)" as NSString)
     }
 }

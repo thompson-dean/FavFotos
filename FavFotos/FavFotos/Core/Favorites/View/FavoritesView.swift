@@ -8,13 +8,28 @@
 import SwiftUI
 
 struct FavoritesView: View {
+    
+    @ObservedObject var vm = FavoritesViewModel()
+    
+    let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct FavoritesView_Previews: PreviewProvider {
-    static var previews: some View {
-        FavoritesView()
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: 20) {
+                ForEach(vm.favoritePhotos, id: \.self) { photoEntity in
+                    if let data = photoEntity.image, let uiImage = UIImage(data: data) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFit()
+                            .cornerRadius(4)
+                    }
+                }
+            }
+            .padding()
+        }
+        .onAppear {
+            vm.fetchFavorites()
+        }
+        .navigationBarTitle("Favorites", displayMode: .large)
     }
 }

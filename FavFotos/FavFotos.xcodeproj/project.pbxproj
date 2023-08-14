@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2A3FB10F2A8270ED002FFF41 /* FavFotosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3FB10E2A8270ED002FFF41 /* FavFotosApp.swift */; };
-		2A3FB1112A8270ED002FFF41 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3FB1102A8270ED002FFF41 /* ContentView.swift */; };
+		2A3FB1112A8270ED002FFF41 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3FB1102A8270ED002FFF41 /* MainTabView.swift */; };
 		2A3FB1132A8270EF002FFF41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A3FB1122A8270EF002FFF41 /* Assets.xcassets */; };
 		2A3FB1172A8270EF002FFF41 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A3FB1162A8270EF002FFF41 /* Preview Assets.xcassets */; };
 		2A3FB1212A8270EF002FFF41 /* FavFotosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3FB1202A8270EF002FFF41 /* FavFotosTests.swift */; };
@@ -35,6 +35,9 @@
 		2ACF04122A88FBD500BBB4CA /* Photo+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF04112A88FBD500BBB4CA /* Photo+URL.swift */; };
 		2ACF04142A89147F00BBB4CA /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF04132A89147F00BBB4CA /* Favorite.swift */; };
 		2ACF04162A8924B400BBB4CA /* SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF04152A8924B400BBB4CA /* SafariWebView.swift */; };
+		2ACF04182A89D8B100BBB4CA /* ImageViewerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF04172A89D8B100BBB4CA /* ImageViewerRepresentable.swift */; };
+		2ACF041A2A89DE6300BBB4CA /* FavoritePhotosDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF04192A89DE6300BBB4CA /* FavoritePhotosDataService.swift */; };
+		2ACF041D2A89DF6F00BBB4CA /* FavoritesContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF041B2A89DF6F00BBB4CA /* FavoritesContainer.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +60,7 @@
 /* Begin PBXFileReference section */
 		2A3FB10B2A8270ED002FFF41 /* FavFotos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FavFotos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A3FB10E2A8270ED002FFF41 /* FavFotosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavFotosApp.swift; sourceTree = "<group>"; };
-		2A3FB1102A8270ED002FFF41 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2A3FB1102A8270ED002FFF41 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		2A3FB1122A8270EF002FFF41 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2A3FB1142A8270EF002FFF41 /* FavFotos.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FavFotos.entitlements; sourceTree = "<group>"; };
 		2A3FB1162A8270EF002FFF41 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -87,6 +90,9 @@
 		2ACF04112A88FBD500BBB4CA /* Photo+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+URL.swift"; sourceTree = "<group>"; };
 		2ACF04132A89147F00BBB4CA /* Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
 		2ACF04152A8924B400BBB4CA /* SafariWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebView.swift; sourceTree = "<group>"; };
+		2ACF04172A89D8B100BBB4CA /* ImageViewerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerRepresentable.swift; sourceTree = "<group>"; };
+		2ACF04192A89DE6300BBB4CA /* FavoritePhotosDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePhotosDataService.swift; sourceTree = "<group>"; };
+		2ACF041C2A89DF6F00BBB4CA /* FavoritesContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FavoritesContainer.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +146,7 @@
 				2A3FB10E2A8270ED002FFF41 /* FavFotosApp.swift */,
 				2A3FB1122A8270EF002FFF41 /* Assets.xcassets */,
 				2A3FB1142A8270EF002FFF41 /* FavFotos.entitlements */,
-				2A3FB1102A8270ED002FFF41 /* ContentView.swift */,
+				2A3FB1102A8270ED002FFF41 /* MainTabView.swift */,
 				2A9DCF262A827329003AF853 /* Extensions */,
 				2A9DCF292A827329003AF853 /* Utilities */,
 				2A9DCF272A827329003AF853 /* Services */,
@@ -188,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				2A9DCF282A827329003AF853 /* PhotoDataService.swift */,
+				2ACF04192A89DE6300BBB4CA /* FavoritePhotosDataService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -209,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				2A9DCF2D2A827329003AF853 /* Photo.swift */,
+				2ACF041B2A89DF6F00BBB4CA /* FavoritesContainer.xcdatamodeld */,
 				2ACF04112A88FBD500BBB4CA /* Photo+URL.swift */,
 				2ACF04132A89147F00BBB4CA /* Favorite.swift */,
 			);
@@ -281,6 +289,7 @@
 			children = (
 				2AA4BCFD2A84695500E310E0 /* CachedImage.swift */,
 				2ACF04152A8924B400BBB4CA /* SafariWebView.swift */,
+				2ACF04172A89D8B100BBB4CA /* ImageViewerRepresentable.swift */,
 				2A9DCF332A827329003AF853 /* CompositionalLayoutView.swift */,
 			);
 			path = ViewComponents;
@@ -455,11 +464,14 @@
 				2ACF04162A8924B400BBB4CA /* SafariWebView.swift in Sources */,
 				2AA4BD022A84BEAC00E310E0 /* NetworkError.swift in Sources */,
 				2ACF040E2A88D40900BBB4CA /* ErrorHandler.swift in Sources */,
+				2ACF041A2A89DE6300BBB4CA /* FavoritePhotosDataService.swift in Sources */,
 				2A9DCF3F2A827329003AF853 /* HomeView.swift in Sources */,
 				2AA4BCFC2A8468FD00E310E0 /* CachedImageManager.swift in Sources */,
 				2ACF04102A88F9FC00BBB4CA /* ImageQuality.swift in Sources */,
 				2A9DCF3C2A827329003AF853 /* Photo.swift in Sources */,
-				2A3FB1112A8270ED002FFF41 /* ContentView.swift in Sources */,
+				2A3FB1112A8270ED002FFF41 /* MainTabView.swift in Sources */,
+				2ACF041D2A89DF6F00BBB4CA /* FavoritesContainer.xcdatamodeld in Sources */,
+				2ACF04182A89D8B100BBB4CA /* ImageViewerRepresentable.swift in Sources */,
 				2A9DCF3E2A827329003AF853 /* CompositionalLayoutView.swift in Sources */,
 				2AA4BD002A84827C00E310E0 /* Image+DefaultImageModifier.swift in Sources */,
 				2A9DCF3D2A827329003AF853 /* HomeViewModel.swift in Sources */,
@@ -824,6 +836,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2ACF041B2A89DF6F00BBB4CA /* FavoritesContainer.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2ACF041C2A89DF6F00BBB4CA /* FavoritesContainer.xcdatamodel */,
+			);
+			currentVersion = 2ACF041C2A89DF6F00BBB4CA /* FavoritesContainer.xcdatamodel */;
+			path = FavoritesContainer.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 2A3FB1032A8270ED002FFF41 /* Project object */;
 }
