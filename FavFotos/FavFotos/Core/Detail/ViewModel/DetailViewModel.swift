@@ -8,22 +8,47 @@
 import Foundation
 
 class DetailViewModel: ObservableObject {
-    private var dataService = FavoritePhotosDataService()
-
+    
     @Published var isPhotoLiked: Bool = false
-
-    func checkIfPhotoIsLiked(id: Int) {
+    
+    private var dataService: FavoritePhotosDataServiceProtocol
+    
+    init(dataService: FavoritePhotosDataServiceProtocol = FavoritePhotosDataService()) {
+        self.dataService = dataService
+    }
+    
+    func checkIfPhotoIsLiked(source: DetailSource) {
+        let id: Int
+        switch source {
+        case .photo(let photo):
+            id = photo.id
+        case .entity(let entity):
+            id = Int(entity.id)
+        }
         isPhotoLiked = dataService.isPhotoLiked(id: id)
     }
     
-    func likePhoto(photo: Photo) {
+    func likePhoto(source: DetailSource) {
+        let id: Int
+        switch source {
+        case .photo(let photo):
+            id = photo.id
+        case .entity(let entity):
+            id = Int(entity.id)
+        }
+        
         if isPhotoLiked {
-            if let photoEntity = dataService.getPhotoEntity(for: photo.id) {
+            if let photoEntity = dataService.getPhotoEntity(for: id) {
                 dataService.delete(entity: photoEntity)
                 isPhotoLiked = false
             }
         } else {
-            dataService.add(photo: photo)
+            switch source {
+            case .photo(let photo):
+                dataService.add(photo: photo)
+            case .entity:
+                break
+            }
             isPhotoLiked = true
         }
     }

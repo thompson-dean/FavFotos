@@ -8,7 +8,15 @@
 import Foundation
 import CoreData
 
-class FavoritePhotosDataService {
+protocol FavoritePhotosDataServiceProtocol {
+    func getFavorites() -> [PhotoEntity]
+    func getPhotoEntity(for id: Int) -> PhotoEntity?
+    func add(photo: Photo)
+    func delete(entity: PhotoEntity)
+    func isPhotoLiked(id: Int) -> Bool
+}
+
+class FavoritePhotosDataService: FavoritePhotosDataServiceProtocol {
     
     private let container: NSPersistentContainer
     private let containerName: String = "FavoritesContainer"

@@ -10,10 +10,10 @@ import SwiftUI
 class FavoritesViewModel: ObservableObject {
     
     @Published var favoritePhotos: [PhotoEntity] = []
-    private var dataService = FavoritePhotosDataService()
+    private var dataService: FavoritePhotosDataServiceProtocol
     
-    init() {
-        fetchFavorites()
+    init(dataService: FavoritePhotosDataServiceProtocol = FavoritePhotosDataService()) {
+        self.dataService = dataService
     }
     
     func fetchFavorites() {

@@ -73,7 +73,7 @@ extension HomeView {
     func photosView() -> some View {
         CompositionalLayoutView(items: vm.photos, id: \.self, spacing: 8) { photo in
             NavigationLink {
-                DetailView(photo: photo)
+                DetailView(source: .photo(photo))
             } label: {
                 GeometryReader { geo in
                     CachedImage(id: photo.id, urlString: photo.url(for: vm.selectedImageQuality)) { phase in
