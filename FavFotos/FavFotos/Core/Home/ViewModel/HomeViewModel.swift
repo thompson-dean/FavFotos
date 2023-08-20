@@ -85,7 +85,7 @@ class HomeViewModel: ObservableObject {
     
     func searchPhotos(searchString: String) {
         guard state != .loading else { return }
-        
+        print(searchString)
         state = .loading
         currentSearchPage += 1
         photoDataService.searchPhotos(searchTerm: searchString, page: currentSearchPage)
@@ -104,14 +104,16 @@ class HomeViewModel: ObservableObject {
     
     func fetchNextSearchPhotos() {
         guard state != .loading, let _ = nextSearchPageURL else { return }
-        
+        print(currentSearchPage)
         state = .loading
         currentSearchPage += 1
+        print(currentSearchPage)
         photoDataService.searchPhotos(searchTerm: self.searchTerm, page: currentSearchPage)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.handleCompletion(completion)
             }, receiveValue: { [weak self] pexelsResponse in
                 self?.nextSearchPageURL = pexelsResponse.nextPage
+                print(pexelsResponse)
                 self?.searchedPhotos += pexelsResponse.photos
             })
             .store(in: &cancellables)

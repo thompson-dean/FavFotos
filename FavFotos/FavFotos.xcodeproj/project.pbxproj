@@ -18,7 +18,6 @@
 		2A9DCF3D2A827329003AF853 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9DCF312A827329003AF853 /* HomeViewModel.swift */; };
 		2A9DCF3E2A827329003AF853 /* CompositionalLayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9DCF332A827329003AF853 /* CompositionalLayoutView.swift */; };
 		2A9DCF3F2A827329003AF853 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9DCF342A827329003AF853 /* HomeView.swift */; };
-		2AA0EEF12A8A5B6100793290 /* MockPhotoDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA0EEF02A8A5B6100793290 /* MockPhotoDataService.swift */; };
 		2AA4BCFA2A838E3700E310E0 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA4BCF92A838E3700E310E0 /* ImageCache.swift */; };
 		2AA4BCFC2A8468FD00E310E0 /* CachedImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA4BCFB2A8468FD00E310E0 /* CachedImageManager.swift */; };
 		2AA4BCFE2A84695500E310E0 /* CachedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA4BCFD2A84695500E310E0 /* CachedImage.swift */; };
@@ -36,11 +35,15 @@
 		2ACF041A2A89DE6300BBB4CA /* FavoritePhotosDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF04192A89DE6300BBB4CA /* FavoritePhotosDataService.swift */; };
 		2ACF041D2A89DF6F00BBB4CA /* FavoritesContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF041B2A89DF6F00BBB4CA /* FavoritesContainer.xcdatamodeld */; };
 		2ACF04202A8A28C300BBB4CA /* URLConstructionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF041F2A8A28C300BBB4CA /* URLConstructionError.swift */; };
-		2ACF04222A8A425E00BBB4CA /* PhotoDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF04212A8A425E00BBB4CA /* PhotoDataServiceTests.swift */; };
-		2ACF04242A8A42A300BBB4CA /* MockNetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF04232A8A42A300BBB4CA /* MockNetworkingManager.swift */; };
-		2ACF04262A8A43FC00BBB4CA /* mock_data.json in Resources */ = {isa = PBXBuildFile; fileRef = 2ACF04252A8A43FC00BBB4CA /* mock_data.json */; };
-		2ACF04282A8A4E2000BBB4CA /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF04272A8A4E2000BBB4CA /* HomeViewModelTests.swift */; };
 		2ACF042E2A8A4FE300BBB4CA /* DetailSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACF042D2A8A4FE300BBB4CA /* DetailSource.swift */; };
+		F79D994B2A92407F0065C448 /* mock_data3.json in Resources */ = {isa = PBXBuildFile; fileRef = F79D99452A92407F0065C448 /* mock_data3.json */; };
+		F79D994C2A92407F0065C448 /* mock_data.json in Resources */ = {isa = PBXBuildFile; fileRef = F79D99462A92407F0065C448 /* mock_data.json */; };
+		F79D994D2A92407F0065C448 /* MockNetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D99472A92407F0065C448 /* MockNetworkingManager.swift */; };
+		F79D994E2A92407F0065C448 /* MockPhotoDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D99482A92407F0065C448 /* MockPhotoDataService.swift */; };
+		F79D99502A92407F0065C448 /* mock_data2.json in Resources */ = {isa = PBXBuildFile; fileRef = F79D994A2A92407F0065C448 /* mock_data2.json */; };
+		F79D99532A9240950065C448 /* PhotoDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D99512A9240950065C448 /* PhotoDataServiceTests.swift */; };
+		F79D99542A9240950065C448 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D99522A9240950065C448 /* HomeViewModelTests.swift */; };
+		F79D99572A9240DF0065C448 /* Bundle+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D99562A9240DF0065C448 /* Bundle+Decodable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,7 +71,6 @@
 		2A9DCF312A827329003AF853 /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		2A9DCF332A827329003AF853 /* CompositionalLayoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompositionalLayoutView.swift; sourceTree = "<group>"; };
 		2A9DCF342A827329003AF853 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		2AA0EEF02A8A5B6100793290 /* MockPhotoDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPhotoDataService.swift; sourceTree = "<group>"; };
 		2AA4BCF92A838E3700E310E0 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		2AA4BCFB2A8468FD00E310E0 /* CachedImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImageManager.swift; sourceTree = "<group>"; };
 		2AA4BCFD2A84695500E310E0 /* CachedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImage.swift; sourceTree = "<group>"; };
@@ -86,11 +88,15 @@
 		2ACF04192A89DE6300BBB4CA /* FavoritePhotosDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePhotosDataService.swift; sourceTree = "<group>"; };
 		2ACF041C2A89DF6F00BBB4CA /* FavoritesContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FavoritesContainer.xcdatamodel; sourceTree = "<group>"; };
 		2ACF041F2A8A28C300BBB4CA /* URLConstructionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConstructionError.swift; sourceTree = "<group>"; };
-		2ACF04212A8A425E00BBB4CA /* PhotoDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDataServiceTests.swift; sourceTree = "<group>"; };
-		2ACF04232A8A42A300BBB4CA /* MockNetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkingManager.swift; sourceTree = "<group>"; };
-		2ACF04252A8A43FC00BBB4CA /* mock_data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mock_data.json; sourceTree = "<group>"; };
-		2ACF04272A8A4E2000BBB4CA /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		2ACF042D2A8A4FE300BBB4CA /* DetailSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSource.swift; sourceTree = "<group>"; };
+		F79D99452A92407F0065C448 /* mock_data3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mock_data3.json; sourceTree = "<group>"; };
+		F79D99462A92407F0065C448 /* mock_data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mock_data.json; sourceTree = "<group>"; };
+		F79D99472A92407F0065C448 /* MockNetworkingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockNetworkingManager.swift; sourceTree = "<group>"; };
+		F79D99482A92407F0065C448 /* MockPhotoDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockPhotoDataService.swift; sourceTree = "<group>"; };
+		F79D994A2A92407F0065C448 /* mock_data2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mock_data2.json; sourceTree = "<group>"; };
+		F79D99512A9240950065C448 /* PhotoDataServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDataServiceTests.swift; sourceTree = "<group>"; };
+		F79D99522A9240950065C448 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
+		F79D99562A9240DF0065C448 /* Bundle+Decodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Decodable.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,9 +163,10 @@
 		2A3FB11F2A8270EF002FFF41 /* FavFotosTests */ = {
 			isa = PBXGroup;
 			children = (
+				F79D99552A9240D20065C448 /* Extensions */,
 				2AA0EEEF2A8A5B5200793290 /* Mock */,
-				2ACF04272A8A4E2000BBB4CA /* HomeViewModelTests.swift */,
-				2ACF04212A8A425E00BBB4CA /* PhotoDataServiceTests.swift */,
+				F79D99522A9240950065C448 /* HomeViewModelTests.swift */,
+				F79D99512A9240950065C448 /* PhotoDataServiceTests.swift */,
 			);
 			path = FavFotosTests;
 			sourceTree = "<group>";
@@ -278,9 +285,11 @@
 		2AA0EEEF2A8A5B5200793290 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
-				2ACF04232A8A42A300BBB4CA /* MockNetworkingManager.swift */,
-				2AA0EEF02A8A5B6100793290 /* MockPhotoDataService.swift */,
-				2ACF04252A8A43FC00BBB4CA /* mock_data.json */,
+				F79D99462A92407F0065C448 /* mock_data.json */,
+				F79D994A2A92407F0065C448 /* mock_data2.json */,
+				F79D99452A92407F0065C448 /* mock_data3.json */,
+				F79D99472A92407F0065C448 /* MockNetworkingManager.swift */,
+				F79D99482A92407F0065C448 /* MockPhotoDataService.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -328,6 +337,14 @@
 				2ACF042D2A8A4FE300BBB4CA /* DetailSource.swift */,
 			);
 			path = Enums;
+			sourceTree = "<group>";
+		};
+		F79D99552A9240D20065C448 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F79D99562A9240DF0065C448 /* Bundle+Decodable.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -383,6 +400,7 @@
 					};
 					2A3FB11B2A8270EF002FFF41 = {
 						CreatedOnToolsVersion = 14.3.1;
+						LastSwiftMigration = 1420;
 						TestTargetID = 2A3FB10A2A8270ED002FFF41;
 					};
 				};
@@ -420,7 +438,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2ACF04262A8A43FC00BBB4CA /* mock_data.json in Resources */,
+				F79D99502A92407F0065C448 /* mock_data2.json in Resources */,
+				F79D994B2A92407F0065C448 /* mock_data3.json in Resources */,
+				F79D994C2A92407F0065C448 /* mock_data.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,10 +485,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2ACF04222A8A425E00BBB4CA /* PhotoDataServiceTests.swift in Sources */,
-				2ACF04242A8A42A300BBB4CA /* MockNetworkingManager.swift in Sources */,
-				2ACF04282A8A4E2000BBB4CA /* HomeViewModelTests.swift in Sources */,
-				2AA0EEF12A8A5B6100793290 /* MockPhotoDataService.swift in Sources */,
+				F79D994E2A92407F0065C448 /* MockPhotoDataService.swift in Sources */,
+				F79D99572A9240DF0065C448 /* Bundle+Decodable.swift in Sources */,
+				F79D99532A9240950065C448 /* PhotoDataServiceTests.swift in Sources */,
+				F79D994D2A92407F0065C448 /* MockNetworkingManager.swift in Sources */,
+				F79D99542A9240950065C448 /* HomeViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -673,11 +694,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YT4PWFD9G5;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Dean.Thompson.FavFotosTests;
@@ -685,6 +712,7 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FavFotos.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FavFotos";
@@ -696,11 +724,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YT4PWFD9G5;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Dean.Thompson.FavFotosTests;

@@ -11,53 +11,81 @@ import Combine
 
 class MockPhotoDataService: PhotoDataServiceProtocol {
     
-    var shouldReturnError: Bool = false
-    private var mockPexelsResponse: PexelsResponse?
+    enum Scenario {
+        case success(responses: [PexelsResponse], imageData: Data?)
+        case failure(error: Error, imageError: Error?)
+    }
     
-    init() {
-        if let mockData = loadMockData(from: "mock_data", fileType: "json") {
-            mockPexelsResponse = try? JSONDecoder().decode(PexelsResponse.self, from: mockData)
-        }
+    let scenario: Scenario
+    
+    init(scenario: Scenario) {
+        self.scenario = scenario
     }
     
     func getPhotos(page: Int) -> AnyPublisher<PexelsResponse, Error> {
-        return responsePublisher()
+        switch scenario {
+        case .success(let responses, _):
+            if page <= responses.count {
+                return Just(responses[page - 1])
+                    .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
+            } else {
+                let error = MockError.responseError
+                return Fail(error: error)
+                    .eraseToAnyPublisher()
+            }
+        case .failure(let error, _):
+            return Fail(error: error)
+                .eraseToAnyPublisher()
+        }
     }
     
     func searchPhotos(searchTerm: String, page: Int) -> AnyPublisher<PexelsResponse, Error> {
-        return responsePublisher()
+        switch scenario {
+        case .success(let responses, _):
+            if page <= responses.count {
+                return Just(responses[page - 1])
+                    .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
+            } else {
+                let error = MockError.responseError
+                return Fail(error: error)
+                    .eraseToAnyPublisher()
+            }
+        case .failure(let error, _):
+            return Fail(error: error)
+                .eraseToAnyPublisher()
+        }
     }
     
     func fetchImage(_ urlString: String) -> AnyPublisher<Data, Error> {
-        return Just(Data())
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
-    
-    private func loadMockData(from fileName: String, fileType: String) -> Data? {
-        if let path = Bundle(for: type(of: self)).path(forResource: fileName, ofType: fileType) {
-            return try? Data(contentsOf: URL(fileURLWithPath: path), options: .alwaysMapped)
-        }
-        return nil
-    }
-    
-    private func responsePublisher() -> AnyPublisher<PexelsResponse, Error> {
-        if shouldReturnError {
-            return Fail(error: MockError.simulatedError)
-                .eraseToAnyPublisher()
-        } else if let response = mockPexelsResponse {
-            return Just(response)
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        } else {
-            return Fail(error: MockError.simulatedError)
-                .eraseToAnyPublisher()
+        switch scenario {
+        case .success(_, let imageData):
+            if let data = imageData {
+                return Just(data)
+                    .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
+            } else {
+                let error = MockError.imageError
+                return Fail(error: error)
+                    .eraseToAnyPublisher()
+            }
+        case .failure(_, let imageError):
+            if let error = imageError {
+                return Fail(error: error)
+                    .eraseToAnyPublisher()
+            } else {
+                let error = MockError.imageError
+                return Fail(error: error)
+                    .eraseToAnyPublisher()
+            }
         }
     }
 }
 
-enum MockError: Error {
-    case simulatedError
+enum MockError: LocalizedError {
+    case responseError
+    case imageError
 }
 
 
